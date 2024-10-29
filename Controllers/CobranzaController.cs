@@ -24,8 +24,8 @@ namespace Sistema_ArgenMotos.Controllers
             [FromQuery] decimal? montoMaximo,
             [FromQuery] DateTime? fechaCobranzaMinima,
             [FromQuery] DateTime? fechaCobranzaMaxima,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] int? pageNumber,
+            [FromQuery] int? pageSize)
         {
             var cobranzas = await _cobranzaService.GetFilteredAsync(metodoPago, montoMinimo, montoMaximo, fechaCobranzaMinima, fechaCobranzaMaxima, pageNumber, pageSize);
             return Ok(cobranzas);

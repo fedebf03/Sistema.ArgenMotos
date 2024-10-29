@@ -32,8 +32,8 @@ namespace Sistema_ArgenMotos.Services
             decimal? precioMaximo,
             DateTime? fechaMinima,
             DateTime? fechaMaxima,
-            int pageNumber,
-            int pageSize)
+            int? pageNumber,
+            int? pageSize)
         {
             var query = _context.OrdenesDeCompra.AsQueryable();
 
@@ -57,9 +57,12 @@ namespace Sistema_ArgenMotos.Services
                 query = query.Where(o => o.Fecha <= fechaMaxima.Value);
 
             // Aplicar paginación
+            if (pageNumber.HasValue && pageSize.HasValue)
+                query = query
+                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+
             var ordenes = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Include(o => o.Proveedor)
                 .Include(o => o.Articulos)
                 .ThenInclude(oa => oa.Articulo)

@@ -23,8 +23,8 @@ namespace Sistema_ArgenMotos.Controllers
             [FromQuery] string? apellido,
             [FromQuery] string? dni,
             [FromQuery] TipoCliente? tipo,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] int? pageNumber,
+            [FromQuery] int? pageSize)
         {
             var clientes = await _clienteService.GetFilteredAsync(nombre, apellido, dni, tipo, pageNumber, pageSize);
             return Ok(clientes);

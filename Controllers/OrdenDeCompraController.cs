@@ -25,8 +25,8 @@ namespace Sistema_ArgenMotos.Controllers
             [FromQuery] decimal? precioMaximo,
             [FromQuery] DateTime? fechaMinima,
             [FromQuery] DateTime? fechaMaxima,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] int? pageNumber,
+            [FromQuery] int? pageSize)
         {
             var ordenes = await _ordenDeCompraService.GetFilteredAsync(proveedorId, estado, precioMinimo, precioMaximo, fechaMinima, fechaMaxima, pageNumber, pageSize);
             return Ok(ordenes);

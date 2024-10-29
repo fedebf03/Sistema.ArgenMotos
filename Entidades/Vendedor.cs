@@ -15,6 +15,10 @@ namespace Sistema_ArgenMotos.Entidades
 
         [Required]
         [StringLength(50)]
+        public string Legajo { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Nombre { get; set; }
 
         [Required]

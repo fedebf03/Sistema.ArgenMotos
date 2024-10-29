@@ -23,8 +23,8 @@ namespace Sistema_ArgenMotos.Controllers
             [FromQuery] decimal? precioMaximo,
             [FromQuery] DateTime? fechaMinima,
             [FromQuery] DateTime? fechaMaxima,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] int? pageNumber,
+            [FromQuery] int? pageSize)
         {
             var facturas = await _facturaService.GetFilteredAsync(clienteId, vendedorId, precioMinimo, precioMaximo, fechaMinima, fechaMaxima, pageNumber, pageSize);
             return Ok(facturas);

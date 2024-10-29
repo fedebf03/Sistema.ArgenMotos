@@ -33,8 +33,8 @@ namespace Sistema_ArgenMotos.Services
             decimal? montoMaximo,
             DateTime? fechaCobranzaMinima,
             DateTime? fechaCobranzaMaxima,
-            int pageNumber,
-            int pageSize)
+            int? pageNumber,
+            int? pageSize)
         {
             var query = _context.Cobranzas.AsQueryable();
 
@@ -55,9 +55,13 @@ namespace Sistema_ArgenMotos.Services
                 query = query.Where(c => c.FechaCobranza <= fechaCobranzaMaxima.Value);
 
             // Aplicar paginación
+            if (pageNumber.HasValue && pageSize.HasValue)
+                query = query
+                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+
+            // Aplicar paginación
             var cobranzas = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<CobranzaDTO>>(cobranzas);

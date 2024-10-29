@@ -27,8 +27,8 @@ namespace Sistema_ArgenMotos.Services
             string? marca,
             string? anno,
             string? descripcion,
-            int pageNumber,
-            int pageSize)
+            int? pageNumber,
+            int? pageSize)
         {
             var query = _context.Articulos.AsQueryable();
 
@@ -46,9 +46,12 @@ namespace Sistema_ArgenMotos.Services
                 query = query.Where(a => a.Descripcion.Contains(descripcion));
 
             // Aplicar paginación
+            if (pageNumber.HasValue && pageSize.HasValue)
+                query = query
+                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+
             var articulos = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<ArticuloDTO>>(articulos);

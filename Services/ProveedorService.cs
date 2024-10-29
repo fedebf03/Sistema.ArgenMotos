@@ -24,11 +24,11 @@ namespace Sistema_ArgenMotos.Services
         }
 
         public async Task<IEnumerable<ProveedorDTO>> GetFilteredAsync(
-            string nombre,
-            string cuil,
+            string? nombre,
+            string? cuil,
             EstadoProveedor? estado,
-            int pageNumber,
-            int pageSize)
+            int? pageNumber,
+            int? pageSize)
         {
             var query = _context.Proveedores.AsQueryable();
 
@@ -45,9 +45,12 @@ namespace Sistema_ArgenMotos.Services
             }
 
             // Aplicar paginación
+            if (pageNumber.HasValue && pageSize.HasValue)
+                query = query
+                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+
             var proveedores = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<ProveedorDTO>>(proveedores);

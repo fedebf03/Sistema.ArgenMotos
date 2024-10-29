@@ -22,8 +22,8 @@ namespace Sistema_ArgenMotos.Controllers
             [FromQuery] string? marca,
             [FromQuery] string? anno,
             [FromQuery] string? descripcion,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] int? pageNumber,
+            [FromQuery] int? pageSize)
         {
             var articulos = await _articuloService.GetFilteredAsync(nombre, marca, anno, descripcion, pageNumber, pageSize);
             return Ok(articulos);

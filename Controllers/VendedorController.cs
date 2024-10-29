@@ -22,8 +22,8 @@ namespace Sistema_ArgenMotos.Controllers
             [FromQuery] string nombre,
             [FromQuery] string apellido,
             [FromQuery] EstadoVendedor? estado,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] int? pageNumber,
+            [FromQuery] int? pageSize)
         {
             var vendedores = await _vendedorService.GetFilteredAsync(dni, nombre, apellido, estado, pageNumber, pageSize);
             return Ok(vendedores);

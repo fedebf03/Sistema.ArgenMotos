@@ -5,6 +5,16 @@ using Sistema_ArgenMotos.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy.WithOrigins("https://argenmotos.com", "http://argenmotos.com", "http://localhost:4200/")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Agregar servicios de AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -39,6 +49,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Frontend");
 
 app.UseAuthorization();
 

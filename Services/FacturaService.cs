@@ -27,14 +27,14 @@ namespace Sistema_ArgenMotos.Services
         }
 
         public async Task<IEnumerable<FacturaDTO>> GetFilteredAsync(
-    int? clienteId,
-    int? vendedorId,
-    decimal? precioMinimo,
-    decimal? precioMaximo,
-    DateTime? fechaMinima,
-    DateTime? fechaMaxima,
-    int pageNumber,
-    int pageSize)
+            int? clienteId,
+            int? vendedorId,
+            decimal? precioMinimo,
+            decimal? precioMaximo,
+            DateTime? fechaMinima,
+            DateTime? fechaMaxima,
+            int? pageNumber,
+            int? pageSize)
         {
             var query = _context.Facturas.AsQueryable();
 
@@ -58,9 +58,12 @@ namespace Sistema_ArgenMotos.Services
                 query = query.Where(f => f.Fecha <= fechaMaxima.Value);
 
             // Aplicar paginación
+            if (pageNumber.HasValue && pageSize.HasValue)
+                query = query
+                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+
             var facturas = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Include(f => f.Cliente)
                 .Include(f => f.Vendedor)
                 .Include(f => f.Articulos)

@@ -28,8 +28,8 @@ namespace Sistema_ArgenMotos.Services
             string? apellido,
             string? dni,
             TipoCliente? tipo,
-            int pageNumber,
-            int pageSize)
+            int? pageNumber,
+            int? pageSize)
         {
             var query = _context.Clientes.AsQueryable();
 
@@ -47,9 +47,12 @@ namespace Sistema_ArgenMotos.Services
                 query = query.Where(c => c.Tipo == tipo.Value);
 
             // Aplicar paginación
+            if (pageNumber.HasValue && pageSize.HasValue)
+                query = query
+                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+
             var clientes = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<ClienteDTO>>(clientes);
