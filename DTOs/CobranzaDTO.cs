@@ -7,7 +7,7 @@ namespace Sistema_ArgenMotos.DTOs
         public int CobranzaId { get; set; }
         public MetodoPago MetodoPago { get; set; }
         public decimal MontoTotal { get; set; }
-        public int FacturaId { get; set; }
-        public DateTime FechaCobranza { get; set; }
+        public int VentaId { get; set; }
+        public DateTime Fecha { get; set; }
     }
 }

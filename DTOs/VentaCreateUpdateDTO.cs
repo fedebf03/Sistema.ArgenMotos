@@ -2,7 +2,7 @@
 
 namespace Sistema_ArgenMotos.DTOs
 {
-    public class FacturaCreateUpdateDTO
+    public class VentaCreateUpdateDTO
     {
         [Required(ErrorMessage = "La fecha es obligatoria.")]
         public DateTime Fecha { get; set; }
@@ -14,11 +14,11 @@ namespace Sistema_ArgenMotos.DTOs
         public int VendedorId { get; set; }
 
         [Required(ErrorMessage = "La lista de artículos es obligatoria.")]
-        [MinLength(1, ErrorMessage = "Debe haber al menos un artículo en la factura.")]
-        public List<FacturaCreateUpdateArticuloDTO> Articulos { get; set; }
+        [MinLength(1, ErrorMessage = "Debe haber al menos un artículo en la venta.")]
+        public List<VentaCreateUpdateArticuloDTO> Articulos { get; set; }
     }
 
-    public class FacturaCreateUpdateArticuloDTO
+    public class VentaCreateUpdateArticuloDTO
     {
         [Required]
         public int ArticuloId { get; set; }

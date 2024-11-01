@@ -16,11 +16,10 @@ namespace Sistema_ArgenMotos.Entidades
         public decimal MontoTotal { get; set; }
 
         [Required]
-        public int FacturaId { get; set; }
-
-        public Factura Factura { get; set; }
+        public int VentaId { get; set; }
+        public Venta Venta { get; set; }
 
         [Required]
-        public DateTime FechaCobranza { get; set; }
+        public DateTime Fecha { get; set; }
     }
 }

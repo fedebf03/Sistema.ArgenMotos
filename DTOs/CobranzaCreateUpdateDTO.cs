@@ -9,10 +9,10 @@ namespace Sistema_ArgenMotos.DTOs
         [Required(ErrorMessage = "El método de pago es obligatorio.")]
         public MetodoPago MetodoPago { get; set; }
 
-        [Required(ErrorMessage = "El ID de la factura es obligatorio.")]
-        public int FacturaId { get; set; }
+        [Required(ErrorMessage = "El ID de la venta es obligatorio.")]
+        public int VentaId { get; set; }
 
         [Required(ErrorMessage = "La fecha de cobranza es obligatoria.")]
-        public DateTime FechaCobranza { get; set; }
+        public DateTime Fecha { get; set; }
     }
 }

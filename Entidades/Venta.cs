@@ -2,17 +2,13 @@
 
 namespace Sistema_ArgenMotos.Entidades
 {
-    public class Factura
+    public class Venta
     {
         [Key]
-        public int FacturaId { get; set; }
-
-        [Required]
         public int VentaId { get; set; }
-        public Venta Venta { get; set; }
 
         [Required]
-        public DateTime Fecha { get; set; }
+        public DateTime Fecha { get; set; } = DateTime.Now;
 
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "El precio final debe ser un valor positivo.")]
@@ -26,6 +22,10 @@ namespace Sistema_ArgenMotos.Entidades
         public int VendedorId { get; set; }
         public Vendedor Vendedor { get; set; }
 
-        public ICollection<Factura_Articulo> Articulos { get; set; }
+        public ICollection<Venta_Articulo> Articulos { get; set; }
+
+        public Factura Factura { get; set; }
+        public ICollection<NotaDebito> NotasDebito { get; set; }
+        public ICollection<NotaCredito> NotasCredito { get; set; }
     }
 }

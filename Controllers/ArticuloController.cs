@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Sistema_ArgenMotos.DTOs;
 using Sistema_ArgenMotos.Services;
 
 namespace Sistema_ArgenMotos.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/v1/[controller]")]
     public class ArticuloController : ControllerBase
     {
         private readonly IArticuloService _articuloService;

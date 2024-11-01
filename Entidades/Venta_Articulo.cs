@@ -2,11 +2,11 @@
 
 namespace Sistema_ArgenMotos.Entidades
 {
-    public class Factura_Articulo
+    public class Venta_Articulo
     {
         [Key]
-        public int FacturaId { get; set; }
-        public Factura Factura { get; set; }
+        public int VentaId { get; set; }
+        public Venta Venta { get; set; }
 
         [Key]
         public int ArticuloId { get; set; }

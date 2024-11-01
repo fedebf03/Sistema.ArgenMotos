@@ -121,10 +121,7 @@ namespace Sistema_ArgenMotos.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CobranzaId"));
 
-                    b.Property<int>("FacturaId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("FechaCobranza")
+                    b.Property<DateTime>("Fecha")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("MetodoPago")
@@ -133,9 +130,12 @@ namespace Sistema_ArgenMotos.Migrations
                     b.Property<decimal>("MontoTotal")
                         .HasColumnType("numeric");
 
+                    b.Property<int>("VentaId")
+                        .HasColumnType("integer");
+
                     b.HasKey("CobranzaId");
 
-                    b.HasIndex("FacturaId");
+                    b.HasIndex("VentaId");
 
                     b.ToTable("Cobranzas");
                 });
@@ -160,11 +160,17 @@ namespace Sistema_ArgenMotos.Migrations
                     b.Property<int>("VendedorId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("VentaId")
+                        .HasColumnType("integer");
+
                     b.HasKey("FacturaId");
 
                     b.HasIndex("ClienteId");
 
                     b.HasIndex("VendedorId");
+
+                    b.HasIndex("VentaId")
+                        .IsUnique();
 
                     b.ToTable("Facturas");
                 });
@@ -188,6 +194,116 @@ namespace Sistema_ArgenMotos.Migrations
                     b.HasIndex("ArticuloId");
 
                     b.ToTable("Factura_Articulos");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaCredito", b =>
+                {
+                    b.Property<int>("NotaCreditoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("NotaCreditoId"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Importe")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("VendedorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VentaId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("NotaCreditoId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("VendedorId");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("NotasCredito");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaCredito_Articulo", b =>
+                {
+                    b.Property<int>("NotaCreditoId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ArticuloId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PrecioUnitario")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("NotaCreditoId", "ArticuloId");
+
+                    b.HasIndex("ArticuloId");
+
+                    b.ToTable("NotaCredito_Articulos");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaDebito", b =>
+                {
+                    b.Property<int>("NotaDebitoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("NotaDebitoId"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Importe")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("VendedorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VentaId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("NotaDebitoId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("VendedorId");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("NotasDebito");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaDebito_Articulo", b =>
+                {
+                    b.Property<int>("NotaDebitoId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ArticuloId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PrecioUnitario")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("NotaDebitoId", "ArticuloId");
+
+                    b.HasIndex("ArticuloId");
+
+                    b.ToTable("NotaDebito_Articulos");
                 });
 
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.OrdenDeCompra", b =>
@@ -281,6 +397,32 @@ namespace Sistema_ArgenMotos.Migrations
                     b.ToTable("Proveedores");
                 });
 
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Usuario", b =>
+                {
+                    b.Property<int>("UsuarioId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UsuarioId"));
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<int>("VendedorId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UsuarioId");
+
+                    b.HasIndex("VendedorId");
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Vendedor", b =>
                 {
                     b.Property<int>("VendedorId")
@@ -326,17 +468,80 @@ namespace Sistema_ArgenMotos.Migrations
                     b.HasKey("VendedorId");
 
                     b.ToTable("Vendedores");
+
+                    b.HasData(
+                        new
+                        {
+                            VendedorId = 1,
+                            Apellido = "Admin",
+                            DNI = "12345678",
+                            Email = "admin@argenmotos.com",
+                            Estado = 0,
+                            Legajo = "V001",
+                            Nombre = "Admin",
+                            Telefono = "123456789"
+                        });
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Venta", b =>
+                {
+                    b.Property<int>("VentaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("VentaId"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("PrecioFinal")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("VendedorId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("VentaId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("VendedorId");
+
+                    b.ToTable("Ventas");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Venta_Articulo", b =>
+                {
+                    b.Property<int>("VentaId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ArticuloId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PrecioUnitario")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("VentaId", "ArticuloId");
+
+                    b.HasIndex("ArticuloId");
+
+                    b.ToTable("Venta_Articulos");
                 });
 
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Cobranza", b =>
                 {
-                    b.HasOne("Sistema_ArgenMotos.Entidades.Factura", "Factura")
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Venta", "Venta")
                         .WithMany()
-                        .HasForeignKey("FacturaId")
+                        .HasForeignKey("VentaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Factura");
+                    b.Navigation("Venta");
                 });
 
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Factura", b =>
@@ -353,9 +558,17 @@ namespace Sistema_ArgenMotos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Venta", "Venta")
+                        .WithOne("Factura")
+                        .HasForeignKey("Sistema_ArgenMotos.Entidades.Factura", "VentaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Cliente");
 
                     b.Navigation("Vendedor");
+
+                    b.Navigation("Venta");
                 });
 
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Factura_Articulo", b =>
@@ -375,6 +588,98 @@ namespace Sistema_ArgenMotos.Migrations
                     b.Navigation("Articulo");
 
                     b.Navigation("Factura");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaCredito", b =>
+                {
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Vendedor", "Vendedor")
+                        .WithMany()
+                        .HasForeignKey("VendedorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Venta", "Venta")
+                        .WithMany("NotasCredito")
+                        .HasForeignKey("VentaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Vendedor");
+
+                    b.Navigation("Venta");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaCredito_Articulo", b =>
+                {
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Articulo", "Articulo")
+                        .WithMany("NotaCredito_Articulos")
+                        .HasForeignKey("ArticuloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema_ArgenMotos.Entidades.NotaCredito", "NotaCredito")
+                        .WithMany("Articulos")
+                        .HasForeignKey("NotaCreditoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Articulo");
+
+                    b.Navigation("NotaCredito");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaDebito", b =>
+                {
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Vendedor", "Vendedor")
+                        .WithMany()
+                        .HasForeignKey("VendedorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Venta", "Venta")
+                        .WithMany("NotasDebito")
+                        .HasForeignKey("VentaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Vendedor");
+
+                    b.Navigation("Venta");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaDebito_Articulo", b =>
+                {
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Articulo", "Articulo")
+                        .WithMany("NotaDebito_Articulos")
+                        .HasForeignKey("ArticuloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema_ArgenMotos.Entidades.NotaDebito", "NotaDebito")
+                        .WithMany("Articulos")
+                        .HasForeignKey("NotaDebitoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Articulo");
+
+                    b.Navigation("NotaDebito");
                 });
 
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.OrdenDeCompra", b =>
@@ -407,11 +712,66 @@ namespace Sistema_ArgenMotos.Migrations
                     b.Navigation("OrdenDeCompra");
                 });
 
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Usuario", b =>
+                {
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Vendedor", "Vendedor")
+                        .WithMany()
+                        .HasForeignKey("VendedorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vendedor");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Venta", b =>
+                {
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Vendedor", "Vendedor")
+                        .WithMany()
+                        .HasForeignKey("VendedorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Vendedor");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Venta_Articulo", b =>
+                {
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Articulo", "Articulo")
+                        .WithMany("Venta_Articulos")
+                        .HasForeignKey("ArticuloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sistema_ArgenMotos.Entidades.Venta", "Venta")
+                        .WithMany("Articulos")
+                        .HasForeignKey("ArticuloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Articulo");
+
+                    b.Navigation("Venta");
+                });
+
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Articulo", b =>
                 {
                     b.Navigation("Factura_Articulos");
 
+                    b.Navigation("NotaCredito_Articulos");
+
+                    b.Navigation("NotaDebito_Articulos");
+
                     b.Navigation("OrdenDeCompra_Articulos");
+
+                    b.Navigation("Venta_Articulos");
                 });
 
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Factura", b =>
@@ -419,9 +779,31 @@ namespace Sistema_ArgenMotos.Migrations
                     b.Navigation("Articulos");
                 });
 
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaCredito", b =>
+                {
+                    b.Navigation("Articulos");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.NotaDebito", b =>
+                {
+                    b.Navigation("Articulos");
+                });
+
             modelBuilder.Entity("Sistema_ArgenMotos.Entidades.OrdenDeCompra", b =>
                 {
                     b.Navigation("Articulos");
+                });
+
+            modelBuilder.Entity("Sistema_ArgenMotos.Entidades.Venta", b =>
+                {
+                    b.Navigation("Articulos");
+
+                    b.Navigation("Factura")
+                        .IsRequired();
+
+                    b.Navigation("NotasCredito");
+
+                    b.Navigation("NotasDebito");
                 });
 #pragma warning restore 612, 618
         }

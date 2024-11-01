@@ -2,11 +2,11 @@
 
 namespace Sistema_ArgenMotos.Entidades
 {
-    public class Factura_Articulo
+    public class NotaCredito_Articulo
     {
         [Key]
-        public int FacturaId { get; set; }
-        public Factura Factura { get; set; }
+        public int NotaCreditoId { get; set; }
+        public NotaCredito NotaCredito { get; set; }
 
         [Key]
         public int ArticuloId { get; set; }

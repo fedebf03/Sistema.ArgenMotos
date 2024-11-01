@@ -30,11 +30,21 @@ namespace Sistema_ArgenMotos.Mappings
             CreateMap<Cliente, ClienteDTO>().ReverseMap();
             CreateMap<ClienteCreateUpdateDTO, Cliente>().ReverseMap();
 
+            // Mapeo para Ventas
+            CreateMap<Venta, VentaDTO>().ReverseMap();
+            CreateMap<VentaCreateUpdateDTO, Venta>().ReverseMap();
+
             // Mapeo para Factura
             CreateMap<FacturaCreateUpdateDTO, Factura>().ReverseMap();
             CreateMap<FacturaCreateUpdateArticuloDTO, Factura_Articulo>().ReverseMap();
             CreateMap<Factura, FacturaDTO>().ReverseMap();
             CreateMap<Factura_Articulo, FacturaArticuloDTO>().ReverseMap();
+
+            // Mapeo para Nota de Débito
+            CreateMap<NotaDebito, NotaDebitoDTO>().ReverseMap();
+            
+            // Mapeo para Nota de Crédito
+            CreateMap<NotaCredito, NotaCreditoDTO>().ReverseMap();
 
             // Mapeo para Cobranza
             CreateMap<Cobranza, CobranzaDTO>().ReverseMap();

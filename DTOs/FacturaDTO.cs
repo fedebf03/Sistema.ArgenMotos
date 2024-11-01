@@ -5,8 +5,8 @@
         public int FacturaId { get; set; }
         public DateTime Fecha { get; set; }
         public decimal PrecioFinal { get; set; }
-        public int ClienteId { get; set; }
-        public int VendedorId { get; set; }
+        public ClienteDTO Cliente { get; set; }
+        public VendedorDTO VendedorDTO { get; set; }
         public List<FacturaArticuloDTO> Articulos { get; set; }
     }
 

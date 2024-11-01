@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Sistema_ArgenMotos.DTOs;
 using Sistema_ArgenMotos.Services;
 
 namespace Sistema_ArgenMotos.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class FacturasController : ControllerBase
@@ -38,27 +40,6 @@ namespace Sistema_ArgenMotos.Controllers
             if (factura == null)
                 return NotFound();
             return Ok(factura);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<FacturaDTO>> Create(FacturaCreateUpdateDTO facturaDTO)
-        {
-            var factura = await _facturaService.CreateAsync(facturaDTO);
-            return CreatedAtAction(nameof(Get), new { id = factura.FacturaId }, facturaDTO);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult<FacturaDTO>> Update(int id, FacturaCreateUpdateDTO facturaDTO)
-        {
-            var factura = await _facturaService.UpdateAsync(id, facturaDTO);
-            return Ok(factura);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            await _facturaService.DeleteAsync(id);
-            return NoContent();
         }
     }
 }

@@ -32,6 +32,9 @@ namespace Sistema_ArgenMotos.Entidades
         public string Anno { get; set; }
 
         public ICollection<OrdenDeCompra_Articulo> OrdenDeCompra_Articulos { get; set; }
+        public ICollection<Venta_Articulo> Venta_Articulos { get; set; }
         public ICollection<Factura_Articulo> Factura_Articulos { get; set; }
+        public ICollection<NotaDebito_Articulo> NotaDebito_Articulos { get; set; }
+        public ICollection<NotaCredito_Articulo> NotaCredito_Articulos { get; set; }
     }
 }

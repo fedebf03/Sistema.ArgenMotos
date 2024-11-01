@@ -21,7 +21,7 @@ namespace Sistema_ArgenMotos.Services
         public async Task<IEnumerable<CobranzaDTO>> GetAllAsync()
         {
             var cobranzas = await _context.Cobranzas
-                .Include(c => c.Factura) // Si quieres incluir información de la factura relacionada
+                .Include(c => c.Venta) // Si quieres incluir información de la venta relacionada
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<CobranzaDTO>>(cobranzas);
@@ -49,10 +49,10 @@ namespace Sistema_ArgenMotos.Services
                 query = query.Where(c => c.MontoTotal <= montoMaximo.Value);
 
             if (fechaCobranzaMinima.HasValue)
-                query = query.Where(c => c.FechaCobranza >= fechaCobranzaMinima.Value);
+                query = query.Where(c => c.Fecha >= fechaCobranzaMinima.Value);
 
             if (fechaCobranzaMaxima.HasValue)
-                query = query.Where(c => c.FechaCobranza <= fechaCobranzaMaxima.Value);
+                query = query.Where(c => c.Fecha <= fechaCobranzaMaxima.Value);
 
             // Aplicar paginación
             if (pageNumber.HasValue && pageSize.HasValue)
@@ -71,7 +71,7 @@ namespace Sistema_ArgenMotos.Services
         public async Task<CobranzaDTO> GetByIdAsync(int id)
         {
             var cobranza = await _context.Cobranzas
-                .Include(c => c.Factura) // Si necesitas la factura
+                .Include(c => c.Venta) // Si necesitas la venta
                 .FirstOrDefaultAsync(c => c.CobranzaId == id);
 
             if (cobranza == null)
@@ -88,10 +88,10 @@ namespace Sistema_ArgenMotos.Services
             var cobranza = _mapper.Map<Cobranza>(cobranzaDTO);
 
             // Verificar si la factura relacionada existe
-            var factura = await _context.Facturas.FindAsync(cobranzaDTO.FacturaId);
+            var factura = await _context.Facturas.FindAsync(cobranzaDTO.VentaId);
             if (factura == null)
             {
-                throw new Exception($"Factura con ID {cobranzaDTO.FacturaId} no encontrada");
+                throw new Exception($"Venta con ID {cobranzaDTO.VentaId} no encontrada");
             }
             cobranza.MontoTotal = factura.PrecioFinal;
 
@@ -116,10 +116,10 @@ namespace Sistema_ArgenMotos.Services
             _mapper.Map(cobranzaDTO, cobranza);
 
             // Verificar si la factura relacionada existe
-            var factura = await _context.Facturas.FindAsync(cobranzaDTO.FacturaId);
+            var factura = await _context.Facturas.FindAsync(cobranzaDTO.VentaId);
             if (factura == null)
             {
-                throw new Exception($"Factura con ID {cobranzaDTO.FacturaId} no encontrada");
+                throw new Exception($"Factura con ID {cobranzaDTO.VentaId} no encontrada");
             }
 
             var updatedCobranza = _context.Cobranzas.Update(cobranza);
