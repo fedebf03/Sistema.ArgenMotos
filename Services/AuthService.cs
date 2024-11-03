@@ -27,9 +27,12 @@ namespace Sistema_ArgenMotos.Services
             var vendedor = await _context.Vendedores.FirstOrDefaultAsync(v => v.Email == registerDTO.EmailVendedor);
 
             if (vendedor == null)
-            {
                 throw new Exception($"No existe ningún vendedor con email {registerDTO.EmailVendedor}");
-            }
+
+            var usuarioExistente = await _context.Usuarios.FirstOrDefaultAsync(u => u.VendedorId == vendedor.VendedorId);
+
+            if (usuarioExistente != null)
+                throw new Exception($"Ya existe un usuario para el vendedor con ID {vendedor.VendedorId} y email {registerDTO.EmailVendedor}");
 
             var usuario = new Usuario
             {

@@ -96,6 +96,10 @@ public class ApplicationDbContext : DbContext
             .WithMany(a => a.NotaCredito_Articulos)
             .HasForeignKey(nca => nca.ArticuloId);
 
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.VendedorId)
+            .IsUnique();
+
         modelBuilder.Entity<Vendedor>().HasData(new Vendedor
         {
             VendedorId = 1,
