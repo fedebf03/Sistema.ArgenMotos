@@ -75,6 +75,13 @@ namespace Sistema_ArgenMotos.Services
 
         public async Task<VendedorDTO> AddAsync(VendedorCreateUpdateDTO vendedorDTO)
         {
+            var vendedorExistente = await _context.Vendedores.FirstOrDefaultAsync(v => v.Email == vendedorDTO.Email);
+
+            if (vendedorExistente != null)
+            {
+                throw new Exception($"Ya existe un vendedor con email {vendedorDTO.Email}");
+            }
+
             var vendedor = _mapper.Map<Vendedor>(vendedorDTO);
             var newVendedor = _context.Vendedores.Add(vendedor);
             await _context.SaveChangesAsync();
